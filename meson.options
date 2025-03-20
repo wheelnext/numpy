@@ -51,3 +51,5 @@ option('test-simd', type: 'array',
        description: 'CPU SIMD feature sets to be tested by the NumPy SIMD test module')
 option('test-simd-args', type: 'string', value: '',
        description: 'Extra arguments passed to the internal `_simd` test module')
+option('variant', type: 'array', value: [],
+        description: 'Wheel variant keys')

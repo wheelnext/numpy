@@ -3,6 +3,23 @@ current_dir = meson.current_source_dir()
 cpu_family = host_machine.cpu_family()
 mod_features = import('features')
 
+if x86_64_variant != ''
+  if x86_64_variant == 'v1'
+    CPU_CONF_BASELINE = 'min'
+    CPU_CONF_DISPATCH = ''
+  elif x86_64_variant == 'v2'
+    CPU_CONF_BASELINE = 'SSE42'
+    CPU_CONF_DISPATCH = ''
+  elif x86_64_variant == 'v3'
+    CPU_CONF_BASELINE = 'AVX2'
+    CPU_CONF_DISPATCH = ''
+  elif x86_64_variant == 'v4'
+    CPU_CONF_BASELINE = 'AVX512_SKX'
+  else
+    error('Unknown x86_64 variant: ' + x86_64_variant)
+  endif
+endif
+
 HWY_SSE4_FLAGS = ['-DHWY_WANT_SSE4', '-DHWY_DISABLE_PCLMUL_AES']
 # Use SSE for floating-point on x86-32 to ensure numeric consistency.
 # The x87 FPU's 80-bit internal precision causes unpredictable rounding

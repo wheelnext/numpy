@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "meson-python>=0.18.0",
+    "meson-python @ https://github.com/wheelnext/meson-python/archive/wheel-variants.tar.gz",
     "Cython>=3.1.0",  # keep in sync with version check in meson.build
 ]
 
@@ -82,6 +82,9 @@ license-files = [
 # Note that the commented out license files are still included in the sdist,
 # just not in Core Metadata and in the .dist-info directory.
 
+dependencies = [
+    'mkl; "blas_lapack::provider::mkl" in variant_properties',
+]
 
 [project.scripts]
 f2py = 'numpy.f2py.f2py2e:main'
@@ -103,6 +106,33 @@ source = "https://github.com/numpy/numpy"
 download = "https://pypi.org/project/numpy/#files"
 tracker = "https://github.com/numpy/numpy/issues"
 "release notes" = "https://numpy.org/doc/stable/release"
+
+[variant.default-priorities]
+namespace = ["x86_64", "aarch64", "blas_lapack"]
+
+[variant.providers.aarch64]
+requires = ["aarch64-variant-provider"]
+plugin-api = "aarch64_variant_provider.plugin:AArch64Plugin"
+
+[variant.providers.blas_lapack]
+build-requires = ["blas-lapack-variant-provider"]
+
+[variant.providers.x86_64]
+requires = ["x86_64-variant-provider"]
+plugin-api = "x86_64_variant_provider.plugin:X8664Plugin"
+
+[variant.variants.accelerate]
+blas_lapack = {provider = ["accelerate"]}
+
+[variant.variants.openblas]
+blas_lapack = {provider = ["openblas"]}
+
+[variant.variants.mkl]
+blas_lapack = {provider = ["mkl"]}
+
+[variant.variants.x8664v4_mkl]
+blas_lapack = {provider = ["mkl"]}
+x86_64 = {level = ["v4"]}
 
 [tool.towncrier]
     single_file = false
