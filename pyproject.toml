@@ -149,6 +149,7 @@ config-settings = "setup-args=-Duse-ilp64=true setup-args=-Dallow-noblas=false b
 enable = ["cpython-freethreading", "pypy", "cpython-prerelease"]
 
 [tool.cibuildwheel.linux]
+repair-wheel-command = ""
 manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"
 musllinux-x86_64-image = "musllinux_1_2"
