@@ -145,7 +145,7 @@ build-frontend = "build"
 skip = "*_i686 *_ppc64le *_s390x *_universal2"
 before-build = "bash {project}/tools/wheels/cibw_before_build.sh {project}"
 # The build will use openblas64 everywhere, except on arm64 macOS >=14.0 (uses Accelerate)
-config-settings = "setup-args=-Duse-ilp64=true setup-args=-Dallow-noblas=false build-dir=build"
+config-settings = "setup-args=-Duse-ilp64=true setup-args=-Dallow-noblas=false build-dir=build variant-name=foo::bar::baz variant-name=a::b::c"
 enable = ["cpython-freethreading", "pypy", "cpython-prerelease"]
 
 [tool.cibuildwheel.linux]
