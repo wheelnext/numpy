@@ -60,13 +60,19 @@ allow_noblas = get_option('allow-noblas')
 # (see cibuildwheel settings in pyproject.toml), but used by CI jobs already
 blas_symbol_suffix = get_option('blas-symbol-suffix')
 
+# Variant overrides options directly specified
+if blas_variant != ''
+  blas_name = blas_variant
+  lapack_name = blas_variant
+  allow_noblas = false
+endif
+
 use_ilp64 = get_option('use-ilp64')
 if use_ilp64
   blas_interface = ['interface: ilp64']
 else
   blas_interface = ['interface: lp64']
 endif
-
 
 blas_order = get_option('blas-order')
 if blas_order == ['auto']
