@@ -1,5 +1,32 @@
 source_root = meson.project_source_root()
 mod_features = import('features')
+
+if aarch64_variant != ''
+  if aarch64_variant in ['8a', '8.1a']
+    CPU_CONF_BASELINE = 'min'
+    CPU_CONF_DISPATCH = ''
+  elif aarch64_variant in ['8.2a', '8.3a', '8.4a', '8.5a', '9.0a']
+    CPU_CONF_BASELINE = 'min'
+    # 8.2-A introduces these instruction sets as "optional"
+    CPU_CONF_DISPATCH = 'max'
+  else
+    error('Unknown aarch64 variant: ' + aarch64_variant)
+  endif
+
+  py = import('python').find_installation(pure: false)
+  cc = meson.get_compiler('c')
+  cpu_flags = run_command(
+    py, 'get_cpu_flags.py',
+    '--language', 'c',
+    '--compiler-name', cc.get_id(),
+    '--compiler-version', cc.version(),
+    '--variant', aarch64_variant,
+    capture: true,
+    check: true,
+  ).stdout().split()
+  add_project_arguments(cpu_flags, language: ['c', 'cpp'])
+endif
+
 NEON = mod_features.new(
   'NEON', 1,
   test_code: files(source_root + '/numpy/distutils/checks/cpu_neon.c')[0]

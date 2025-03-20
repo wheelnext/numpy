@@ -1,8 +1,8 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "meson-python>=0.15.0",
-    "Cython>=3.0.6",  # keep in sync with version check in meson.build
+    "meson-python @ https://github.com/wheelnext/meson-python/archive/wheel-variants.tar.gz",
+    "Cython >= 3.0.6"
 ]
 
 [project]
@@ -58,6 +58,19 @@ source = "https://github.com/numpy/numpy"
 download = "https://pypi.org/project/numpy/#files"
 tracker = "https://github.com/numpy/numpy/issues"
 "release notes" = "https://numpy.org/doc/stable/release"
+
+[variant.default-priorities]
+namespace = ["x86_64", "aarch64"]
+
+[variant.providers.aarch64]
+requires = ["provider-variant-aarch64 @ git+https://github.com/wheelnext/variant_aarch64@dev"]
+enable-if = "platform_machine == 'aarch64' or 'arm' in platform_machine"
+plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
+
+[variant.providers.x86_64]
+requires = ["provider-variant-x86-64 @ git+https://github.com/wheelnext/variant_x86_64@dev"]
+enable-if = "platform_machine == 'x86_64' or platform_machine == 'AMD64'"
+plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
 [tool.towncrier]
     single_file = false

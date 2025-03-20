@@ -1,6 +1,36 @@
 source_root = meson.project_source_root()
 mod_features = import('features')
 
+if x86_64_variant != ''
+  if x86_64_variant == 'v1'
+    CPU_CONF_BASELINE = 'min'
+    CPU_CONF_DISPATCH = ''
+  elif x86_64_variant == 'v2'
+    CPU_CONF_BASELINE = 'SSE42'
+    CPU_CONF_DISPATCH = ''
+  elif x86_64_variant == 'v3'
+    CPU_CONF_BASELINE = 'AVX2'
+    CPU_CONF_DISPATCH = ''
+  elif x86_64_variant == 'v4'
+    CPU_CONF_BASELINE = 'AVX512_SKX'
+  else
+    error('Unknown x86_64 variant: ' + x86_64_variant)
+  endif
+
+  py = import('python').find_installation(pure: false)
+  cc = meson.get_compiler('c')
+  cpu_flags = run_command(
+    py, 'get_cpu_flags.py',
+    '--language', 'c',
+    '--compiler-name', cc.get_id(),
+    '--compiler-version', cc.version(),
+    '--variant', x86_64_variant,
+    capture: true,
+    check: true,
+  ).stdout().split()
+  add_project_arguments(cpu_flags, language: ['c', 'cpp'])
+endif
+
 SSE = mod_features.new(
   'SSE', 1,  args: '-msse',
   test_code: files(source_root + '/numpy/distutils/checks/cpu_sse.c')[0]
