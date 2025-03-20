@@ -152,7 +152,7 @@ jobs:
         uses: pypa/cibuildwheel@42728e866bbc80d544a70825bd9990b9a26f1a50  # v2.23.1
         env:
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-          CIBW_CONFIG_SETTINGS: "setup-args=-Duse-ilp64=true setup-args=-Dallow-noblas=false build-dir=build variant=blas::variant::${{ matrix.blas }} setup-args=-Dblas=${{ matrix.blas }}"
+          CIBW_CONFIG_SETTINGS: "setup-args=-Duse-ilp64=true setup-args=-Dallow-noblas=false build-dir=build variant-name=blas::variant::${{ matrix.blas }} setup-args=-Dblas=${{ matrix.blas }}"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
