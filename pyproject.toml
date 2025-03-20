@@ -1,8 +1,9 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "meson-python>=0.15.0",
+    "meson-python @ https://github.com/wheelnext/meson-python/archive/wheel-variants.tar.gz",
     "Cython>=3.0.6",  # keep in sync with version check in meson.build
+    "variant_x86_64 @ https://github.com/wheelnext/variant_x86_64/archive/main.tar.gz ; 'x86_64' in variants"
 ]
 
 [project]
