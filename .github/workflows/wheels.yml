@@ -46,8 +46,11 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - name: Install deps
+      - name: Install build
         run: pip install build
+
+      - name: Install deps
+        run: apt install libmkl-full-dev libopenblas-dev
 
       - name: Build wheels
         run: python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false -Csetup-args=-Dblas=${{ matrix.blas }} -Cvariant-name=blas::variant::${{ matrix.blas }}
