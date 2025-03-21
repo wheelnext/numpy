@@ -46,5 +46,8 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      - name: Install deps
+        run: pip install build
+
       - name: Build wheels
         run: python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false
