@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   build_wheels:
-    name: Build wheel ${{ matrix.python }}-${{ matrix.mkl }}
+    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
       # Ensure that a wheel builder finishes even if another fails
@@ -50,4 +50,4 @@ jobs:
         run: pip install build
 
       - name: Build wheels
-        run: python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false
+        run: python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false -Cblas=${{ matrix.blas }} -Cvariant-name=blas::variant::${{ matrix.blas }}
