@@ -41,16 +41,9 @@ jobs:
           submodules: true
           persist-credentials: false
 
-      # Used to push the built wheels
-      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+      - uses: prefix-dev/setup-pixi@v0.8.3
         with:
-          python-version: ${{ matrix.python }}
-
-      - name: Install build
-        run: pip install build
-
-      - name: Install deps
-        run: sudo apt install -y libmkl-full-dev libopenblas-dev
+          cache: true
 
       - name: Build wheels
-        run: python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false -Csetup-args=-Dblas=${{ matrix.blas }} -Cvariant-name=blas::variant::${{ matrix.blas }}
+        run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false -Csetup-args=-Dblas=${{ matrix.blas }} -Cvariant-name=blas::variant::${{ matrix.blas }}
