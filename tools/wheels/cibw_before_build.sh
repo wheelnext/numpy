@@ -62,4 +62,4 @@ if [[ $FREE_THREADED_BUILD == "True" ]]; then
     python -m pip install -i https://pypi.anaconda.org/scientific-python-nightly-wheels/simple cython
 fi
 
-dnf install blis
+dnf install -y blis
