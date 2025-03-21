@@ -47,5 +47,4 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Build wheels
-        run:
-          - python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false
+        run: python -m build -w -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dallow-noblas=false
