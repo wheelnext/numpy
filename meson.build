@@ -88,5 +88,19 @@ if host_machine.system() == 'darwin' and cc.has_link_argument('-Wl,-ld_classic')
   add_project_link_arguments('-Wl,-ld_classic', language : ['c', 'cpp'])
 endif
 
+blas_variant = ''
+
+foreach variant_meta : get_option('variant')
+  split_meta = variant_meta.split('::')
+  if split_meta.length() != 3
+    error('Invalid variant key: ' + variant_meta)
+  endif
+  if split_meta[0].strip() == 'blas' and split_meta[1].strip() == 'variant'
+    blas_variant = split_meta[2].strip()
+  else
+    error('Unsupported variant key: ' + variant_meta)
+  endif
+endforeach
+
 subdir('meson_cpu')
 subdir('numpy')

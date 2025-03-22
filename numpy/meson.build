@@ -60,26 +60,19 @@ allow_noblas = get_option('allow-noblas')
 # (see cibuildwheel settings in pyproject.toml), but used by CI jobs already
 blas_symbol_suffix = get_option('blas-symbol-suffix')
 
+# Variant overrides options directly specified
+if blas_variant != ''
+  blas_name = blas_variant
+  lapack_name = blas_variant
+  allow_noblas = false
+endif
+
 use_ilp64 = get_option('use-ilp64')
 if use_ilp64
   blas_interface = ['interface: ilp64']
 else
   blas_interface = ['interface: lp64']
 endif
-
-foreach variant_meta : get_option('variant')
-  split_meta = variant_meta.split('::')
-  if split_meta.length() != 3
-    error('Invalid variant key: ' + variant_meta)
-  endif
-  if split_meta[0].strip() == 'blas' and split_meta[1].strip() == 'variant'
-    blas_name = split_meta[2].strip()
-    lapack_name = blas_name
-    allow_noblas = false
-  else
-    error('Unsupported variant key: ' + variant_meta)
-  endif
-endforeach
 
 blas_order = get_option('blas-order')
 if blas_order == ['auto']
