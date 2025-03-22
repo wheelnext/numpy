@@ -1,6 +1,20 @@
 source_root = meson.project_source_root()
 mod_features = import('features')
 
+if x86_64_variant != ''
+  if x86_64_variant == 'v1'
+    CPU_CONF_BASELINE = 'min'
+  elif x86_64_variant == 'v2'
+    CPU_CONF_BASELINE = 'SSE42'
+  elif x86_64_variant == 'v3'
+    CPU_CONF_BASELINE = 'AVX2'
+  elif x86_64_variant == 'v4'
+    CPU_CONF_BASELINE = 'AVX512_SKX'
+  else
+    error('Unknown x86_64 variant: ' + x86_64_variant)
+  endif
+endif
+
 SSE = mod_features.new(
   'SSE', 1,  args: '-msse',
   test_code: files(source_root + '/numpy/distutils/checks/cpu_sse.c')[0]
