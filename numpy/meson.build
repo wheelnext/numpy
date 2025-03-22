@@ -75,6 +75,7 @@ foreach variant_meta : get_option('variant')
   if split_meta[0].strip() == 'blas' and split_meta[1].strip() == 'variant'
     blas_name = split_meta[2].strip()
     lapack_name = blas_name
+    allow_noblas = false
   else
     error('Unsupported variant key: ' + variant_meta)
   endif
