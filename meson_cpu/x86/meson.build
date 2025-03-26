@@ -4,10 +4,13 @@ mod_features = import('features')
 if x86_64_variant != ''
   if x86_64_variant == 'v1'
     CPU_CONF_BASELINE = 'min'
+    CPU_CONF_DISPATCH = ''
   elif x86_64_variant == 'v2'
     CPU_CONF_BASELINE = 'SSE42'
+    CPU_CONF_DISPATCH = ''
   elif x86_64_variant == 'v3'
     CPU_CONF_BASELINE = 'AVX2'
+    CPU_CONF_DISPATCH = ''
   elif x86_64_variant == 'v4'
     CPU_CONF_BASELINE = 'AVX512_SKX'
   else
