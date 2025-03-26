@@ -1,0 +1,52 @@
+# Workflow to build and test wheels.
+# To work on the wheel building infrastructure on a fork, comment out:
+#
+# if: github.repository == 'numpy/numpy'
+#
+# in the get_commit_message job. Be sure to include [wheel build] in your commit
+# message to trigger the build. All files related to wheel building are located
+# at tools/wheels/
+# Alternatively, you can add labels to the pull request in order to trigger wheel
+# builds.
+# The labels that trigger builds are:
+# 36 - Build(for changes to the building process,
+# 14 - Release(ensure wheels build before release)
+name: Wheel builder
+
+on:
+  push:
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build_wheels:
+    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64[0] }}
+    runs-on: ${{ matrix.buildplat[0] }}
+    strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
+      matrix:
+        blas: [openblas, mkl]
+        # Github Actions doesn't support pairing matrix values together, let's improvise
+        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
+        buildplat:
+          - [ubuntu-22.04, manylinux_x86_64, ""]
+        python: ["3.12"]
+        x86_64:
+          - [v1, -march=x86-64]
+          - [v2, -march=x86-64-v2]
+          - [v3, -march=x86-64-v3]
+          - [v4, -march=x86-64-v4]
+
+    steps:
+      - name: Checkout numpy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
+          persist-credentials: false
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Build wheels
+        run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Cvariant=blas::variant::${{ matrix.blas }} -Cvariant=x86_64::baseline::${{ matrix.x86_64[0] }} -Ccompile-args=-v -Csetup-args=-Dc_args=${{ matrix.x86_64[1] }} -Csetup-args=-Dcpp_args=${{ matrix.x86_64[1] }}

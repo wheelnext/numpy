@@ -106,5 +106,3 @@ numpy/version.py linguist-generated
 ./doc/source/reference/simd/*.inc text
 ./numpy/_core/src/_simd/*.inc text diff=c
 
-# SCM syntax highlighting
-pixi.lock linguist-language=YAML linguist-generated=true
