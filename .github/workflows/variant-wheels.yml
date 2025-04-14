@@ -50,3 +50,10 @@ jobs:
 
       - name: Build wheels
         run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Cvariant=blas::variant::${{ matrix.blas }} -Cvariant=x86_64::level::${{ matrix.x86_64[0] }} -Ccompile-args=-v -Csetup-args=-Dc_args=${{ matrix.x86_64[1] }} -Csetup-args=-Dcpp_args=${{ matrix.x86_64[1] }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.blas }}-x86-64-${{ matrix.x86_64[0] }}
+          path: dist/*.whl
+          if-no-files-found: error
+          compression-level: 0
