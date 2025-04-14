@@ -4,14 +4,18 @@ name = "numpy-wheel-build"
 platforms = ["linux-64"]
 
 [tasks]
-build = "python -m build -w"
+build = "python -m build --installer=uv -w"
 
 [dependencies]
 c-compiler = "*"
 cxx-compiler = "*"
 fortran-compiler = "*"
-python-build = "*"
 pkg-config = "*"
+python = "*"
+uv = "*"
+
+[pypi-dependencies]
+build = { git = "https://github.com/mgorny/build", branch = "variant-deps" }
 
 [feature.mkl.dependencies]
 mkl-devel = "*"
