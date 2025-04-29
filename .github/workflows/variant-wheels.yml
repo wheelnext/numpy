@@ -32,7 +32,7 @@ jobs:
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
           - [ubuntu-22.04, manylinux_x86_64, ""]
-        python: ["3.12"]
+        python: ["3.10", "3.11", "3.12", "3.13"]
         x86_64: [v1, v2, v3, v4, ""]
 
     steps:
@@ -44,17 +44,20 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
+      - name: Install build fork
+        run: pip install git+https://github.com/mgorny/build@variant-deps
+
       - name: Build variant wheel
         if: matrix.x86_64 != ''
-        run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Ccompile-args=-v
+        run: python -m build -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
         if: matrix.x86_64 == ''
-        run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
+        run: python -m build -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.blas }}-x86-64-${{ matrix.x86_64 }}
+          name: wheel-${{ matrix.blas }}-x86-64-${{ matrix.x86_64 }}-${{ matrix.python }}
           path: wheelhouse/*.whl
           if-no-files-found: error
           compression-level: 0
