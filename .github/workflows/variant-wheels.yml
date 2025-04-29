@@ -32,7 +32,7 @@ jobs:
         # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
         buildplat:
           - [ubuntu-22.04, manylinux_x86_64, ""]
-        python: ["3.12"]
+        python: ["3.13"]
         x86_64: [v1, v2, v3, v4, ""]
 
     steps:

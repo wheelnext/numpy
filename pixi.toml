@@ -13,7 +13,8 @@ cxx-compiler = "*"
 fortran-compiler = "*"
 pkg-config = "*"
 pip = "*"
-python = "*"
+python = "3.13.*"
+libxcrypt = "*"
 
 [pypi-dependencies]
 build = { git = "https://github.com/mgorny/build", branch = "variant-deps" }
