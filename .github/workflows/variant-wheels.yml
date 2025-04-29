@@ -45,7 +45,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.3
 
       - name: Install build fork
-        run: pip install git+https://github.com/mgorny/build@variant-deps
+        run: pip install git+https://github.com/wheelnext/build@variant-deps
 
       - name: Build variant wheel
         if: matrix.x86_64 != ''
