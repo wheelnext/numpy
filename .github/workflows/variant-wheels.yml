@@ -30,7 +30,7 @@ jobs:
         blas: [openblas]
         python: ["3.13"]
         x86_64: [v4]
-        plat: [ubuntu-22.04, macos-13]
+        plat: [macos-13]
 
     steps:
       - name: Checkout numpy
@@ -72,7 +72,7 @@ jobs:
         blas: [openblas]
         python: ["3.13"]
         aarch64: ["8.1a"]
-        plat: [ubuntu-22.04-arm, macos-14]
+        plat: [macos-14]
 
     steps:
       - name: Checkout numpy
