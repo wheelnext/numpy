@@ -21,8 +21,8 @@ permissions:
 
 jobs:
   build_wheels_x86_64:
-    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64 }}
-    runs-on: ubuntu-22.04
+    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64 }}-${{ matrix.plat }}
+    runs-on: ${{ matrix.plat }}
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
@@ -30,6 +30,7 @@ jobs:
         blas: [openblas]
         python: ["3.13"]
         x86_64: [v4]
+        plat: [ubuntu-22.04, macos-13]
 
     steps:
       - name: Checkout numpy
@@ -56,14 +57,14 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-x86-64-${{ matrix.x86_64 }}
+          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-x86-64-${{ matrix.x86_64 }}-${{ matrix.plat }}
           path: wheelhouse/*.whl
           if-no-files-found: error
           compression-level: 0
 
   build_wheels_aarch64:
-    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-armv-${{ matrix.aarch64 }}
-    runs-on: ubuntu-22.04-arm
+    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-armv-${{ matrix.aarch64 }}-${{ matrix.plat }}
+    runs-on: ${{ matrix.plat }}
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
@@ -71,6 +72,7 @@ jobs:
         blas: [openblas]
         python: ["3.13"]
         aarch64: ["8.1a"]
+        plat: [ubuntu-22.04-arm, macos-14]
 
     steps:
       - name: Checkout numpy
@@ -86,7 +88,7 @@ jobs:
       - name: Build variant wheel
         if: matrix.aarch64 != ''
         env:
-          PLAT: linux_x86_64
+          PLAT: linux_aarch64
         run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
@@ -97,7 +99,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-aarch64-armv${{ matrix.aarch64 }}
+          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-aarch64-armv${{ matrix.aarch64 }}-${{ matrix.plat }}
           path: wheelhouse/*.whl
           if-no-files-found: error
           compression-level: 0
