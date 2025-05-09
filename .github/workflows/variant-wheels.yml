@@ -48,6 +48,8 @@ jobs:
 
       - name: Build non-variant wheel
         if: matrix.x86_64 == ''
+        env:
+          PLAT: linux_x86_64
         run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
@@ -58,7 +60,7 @@ jobs:
           compression-level: 0
 
   build_wheels_aarch64:
-    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64 }}
+    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-armv-${{ matrix.aarch64 }}
     runs-on: ubuntu-22.04-arm
     strategy:
       # Ensure that a wheel builder finishes even if another fails
@@ -66,7 +68,7 @@ jobs:
       matrix:
         blas: [openblas]
         python: ["3.13"]
-        aarch64: [""]
+        aarch64: [v8.1]
 
     steps:
       - name: Checkout numpy
@@ -85,6 +87,8 @@ jobs:
 
       - name: Build non-variant wheel
         if: matrix.aarch64 == ''
+        env:
+          PLAT: linux_aarch64
         run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
