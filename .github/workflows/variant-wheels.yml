@@ -69,7 +69,7 @@ jobs:
       matrix:
         blas: [""]
         python: ["3.10", "3.11", "3.12", "3.13"]
-        aarch64: ["8a", "8.1a", "8.2a", "8.3a", "8.4a", "8.5a", "9.0a"]
+        aarch64: ["8a", "8.1a", "8.2a", "8.3a", "8.4a", "8.5a"]
         plat: [ubuntu-22.04-arm, macos-14]
 
     steps:
