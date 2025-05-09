@@ -27,10 +27,10 @@ jobs:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
       matrix:
-        blas: [openblas]
-        python: ["3.13"]
-        x86_64: [v4]
-        plat: [macos-13]
+        blas: []
+        python: ["3.10", "3.11", "3.12", "3.13"]
+        x86_64: [v1, v2, v3, v4]
+        plat: [ubuntu-22.04, macos-13]
 
     steps:
       - name: Checkout numpy
@@ -66,13 +66,11 @@ jobs:
     name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-armv-${{ matrix.aarch64 }}-${{ matrix.plat }}
     runs-on: ${{ matrix.plat }}
     strategy:
-      # Ensure that a wheel builder finishes even if another fails
-      fail-fast: false
       matrix:
-        blas: [openblas]
-        python: ["3.13"]
-        aarch64: ["8.1a"]
-        plat: [macos-14]
+        blas: []
+        python: ["3.10", "3.11", "3.12", "3.13"]
+        aarch64: ["8a", "8.1a", "8.2a", "8.3a", "8.4a", "8.5a", "9.0a"]
+        plat: [ubuntu-22.04-arm, macos-14]
 
     steps:
       - name: Checkout numpy
