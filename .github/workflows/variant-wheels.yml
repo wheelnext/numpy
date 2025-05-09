@@ -22,18 +22,14 @@ permissions:
 jobs:
   build_wheels:
     name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64 }}
-    runs-on: ${{ matrix.buildplat[0] }}
+    runs-on: ubuntu-22.04
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
       matrix:
         blas: [openblas]
-        # Github Actions doesn't support pairing matrix values together, let's improvise
-        # https://github.com/github/feedback/discussions/7835#discussioncomment-1769026
-        buildplat:
-          - [ubuntu-22.04, manylinux_x86_64, ""]
         python: ["3.13"]
-        x86_64: [v1, v2, v3, v4, ""]
+        x86_64: [""]
 
     steps:
       - name: Checkout numpy
@@ -50,7 +46,7 @@ jobs:
 
       - name: Build non-variant wheel
         if: matrix.x86_64 == ''
-        run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
         with:
