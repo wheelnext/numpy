@@ -88,6 +88,7 @@ if host_machine.system() == 'darwin' and cc.has_link_argument('-Wl,-ld_classic')
   add_project_link_arguments('-Wl,-ld_classic', language : ['c', 'cpp'])
 endif
 
+aarch64_variant = ''
 blas_variant = ''
 x86_64_variant = ''
 
@@ -103,6 +104,11 @@ foreach variant_meta : get_option('variant')
       error('Variant valid only on x86_64: ' + variant_meta)
     endif
     x86_64_variant = split_meta[2].strip()
+  elif split_meta[0].strip() == 'aarch64' and split_meta[1].strip() == 'version'
+    if host_machine.cpu_family() != 'aarch64'
+      error('Variant valid only on aarch64: ' + variant_meta)
+    endif
+    aarch64_variant = split_meta[2].strip()
   else
     error('Unsupported variant key: ' + variant_meta)
   endif
