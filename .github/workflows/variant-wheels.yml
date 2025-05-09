@@ -20,7 +20,7 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
-  build_wheels:
+  build_wheels_x86_64:
     name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64 }}
     runs-on: ubuntu-22.04
     strategy:
@@ -29,8 +29,7 @@ jobs:
       matrix:
         blas: [openblas]
         python: ["3.13"]
-        x86_64: [""]
-        aarch64: [""]
+        x86_64: [v4]
 
     steps:
       - name: Checkout numpy
@@ -45,7 +44,7 @@ jobs:
 
       - name: Build variant wheel
         if: matrix.x86_64 != ''
-        run: pixi run -e ${{ matrix.blas }} build -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
         if: matrix.x86_64 == ''
@@ -53,7 +52,44 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-x86-64-${{ matrix.x86_64 }}-armv${{ matrix.aarch64 }}
+          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-x86-64-${{ matrix.x86_64 }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+          compression-level: 0
+
+  build_wheels_aarch64:
+    name: Build wheel ${{ matrix.python }}-${{ matrix.blas }}-x86_64-${{ matrix.x86_64 }}
+    runs-on: ubuntu-22.04-arm
+    strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
+      matrix:
+        blas: [openblas]
+        python: ["3.13"]
+        aarch64: [""]
+
+    steps:
+      - name: Checkout numpy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Build variant wheel
+        if: matrix.aarch64 != ''
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Ccompile-args=-v
+
+      - name: Build non-variant wheel
+        if: matrix.aarch64 == ''
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.blas }}-${{ matrix.python }}-aarch64-armv${{ matrix.aarch64 }}
           path: wheelhouse/*.whl
           if-no-files-found: error
           compression-level: 0
@@ -61,7 +97,7 @@ jobs:
   combine_artifacts:
     name: Combine artifacts
     runs-on: ubuntu-22.04
-    needs: build_wheels
+    needs: [build_wheels_x86_64, build_wheels_aarch64]
     steps:
       - uses: actions/download-artifact@v4
       - uses: actions/upload-artifact@v4
