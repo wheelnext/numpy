@@ -60,18 +60,14 @@ tracker = "https://github.com/numpy/numpy/issues"
 "release notes" = "https://numpy.org/doc/stable/release"
 
 [variant.default-priorities]
-namespace = ["x86_64", "aarch64", "blas"]
+namespace = ["x86_64", "aarch64"]
 
 [variant.providers.aarch64]
-requires = ["provider-variant-aarch64 @ https://github.com/wheelnext/provider-variant-aarch64/archive/main.tar.gz"]
+requires = ["provider-variant-aarch64 == 0.0.1"]
 plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
 
-[variant.providers.blas]
-requires = ["meson-python @ https://github.com/wheelnext/meson-python/archive/wheel-variants.tar.gz"]
-plugin-api = "demo_plugins:BlasPlugin"
-
 [variant.providers.x86_64]
-requires = ["provider-variant-x86-64 @ https://github.com/wheelnext/provider-variant-x86-64/archive/dev.tar.gz"]
+requires = ["provider-variant-x86-64 == 0.0.1"]
 plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
 [tool.towncrier]
