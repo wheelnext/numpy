@@ -1,8 +1,6 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "provider-variant-x86-64 @ https://github.com/wheelnext/provider-variant-x86-64/archive/dev.tar.gz",
-    "provider-variant-aarch64 @ https://github.com/wheelnext/provider-variant-aarch64/archive/main.tar.gz",
     "meson-python @ https://github.com/wheelnext/meson-python/archive/wheel-variants.tar.gz",
     "Cython >= 3.0.6"
 ]
@@ -65,11 +63,11 @@ tracker = "https://github.com/numpy/numpy/issues"
 namespace = ["x86_64", "aarch64"]
 
 [variant.providers.aarch64]
-requires = ["provider-variant-aarch64 == 0.0.1"]
+requires = ["provider-variant-aarch64 >=0.0.1,<1"]
 plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
 
 [variant.providers.x86_64]
-requires = ["provider-variant-x86-64 == 0.0.1"]
+requires = ["provider-variant-x86-64 >=0.0.1,<1"]
 plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
 [tool.towncrier]
