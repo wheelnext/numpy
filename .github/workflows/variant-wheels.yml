@@ -87,9 +87,7 @@ jobs:
         if: matrix.aarch64 != ''
         env:
           PLAT: linux_aarch64
-        run: |
-          variant_label="${{ matrix.aarch64 }}"
-          bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Cvariant-label=armv${variant_label/./_} -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Cvariant-label=armv${{ matrix.aarch64 }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
         if: matrix.aarch64 == ''
