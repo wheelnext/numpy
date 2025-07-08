@@ -20,7 +20,7 @@ if aarch64_variant != ''
     compiler_type = cc.get_id()
   endif
   cpu_flags = run_command(
-    py, 'get_cpu_flags.py', '--compiler-type', compiler_type, '--variant', x86_64_variant,
+    py, 'get_cpu_flags.py', '--compiler-type', compiler_type, '--variant', aarch64_variant,
     capture: true,
     check: true,
   ).stdout().split()
