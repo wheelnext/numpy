@@ -63,12 +63,12 @@ tracker = "https://github.com/numpy/numpy/issues"
 namespace = ["x86_64", "aarch64"]
 
 [variant.providers.aarch64]
-requires = ["provider-variant-aarch64 >=0.0.1,<1"]
+requires = ["provider-variant-aarch64 @ git+https://github.com/wheelnext/variant_aarch64@dev"]
 enable-if = "platform_machine == 'aarch64' or 'arm' in platform_machine"
 plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
 
 [variant.providers.x86_64]
-requires = ["provider-variant-x86-64 >=0.0.1,<1"]
+requires = ["provider-variant-x86-64 @ git+https://github.com/wheelnext/variant_x86_64@dev"]
 enable-if = "platform_machine == 'x86_64' or platform_machine == 'AMD64'"
 plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
