@@ -16,6 +16,19 @@ if x86_64_variant != ''
   else
     error('Unknown x86_64 variant: ' + x86_64_variant)
   endif
+
+  py = import('python').find_installation(pure: false)
+  cc = meson.get_compiler('c')
+  compiler_type = cc.get_argument_syntax()
+  if compiler_type == ''
+    compiler_type = cc.get_id()
+  endif
+  cpu_flags = run_command(
+    py, 'get_cpu_flags.py', '--compiler-type', compiler_type, '--variant', x86_64_variant,
+    capture: true,
+    check: true,
+  ).stdout().split()
+  add_project_arguments(cpu_flags, language: ['c', 'cpp'])
 endif
 
 SSE = mod_features.new(
