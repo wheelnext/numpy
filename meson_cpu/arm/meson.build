@@ -20,7 +20,7 @@ if aarch64_variant != ''
     '--language', 'c',
     '--compiler-name', cc.get_id(),
     '--compiler-version', cc.version(),
-    '--variant', x86_64_variant,
+    '--variant', aarch64_variant,
     capture: true,
     check: true,
   ).stdout().split()
