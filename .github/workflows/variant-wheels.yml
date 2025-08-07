@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         blas: [""]
-        python: ["3.10", "3.11", "3.12", "3.13"]
+        python: ["3.11", "3.12", "3.13", "3.14-dev"]
         x86_64: [v1, v2, v3, v4]
         plat: [ubuntu-22.04, macos-13]
 
