@@ -27,12 +27,15 @@ jobs:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
       matrix:
-        blas: [""]
+        blas: [openblas, accelerate]
 #        python: ["3.11", "3.12", "3.13", "3.14-dev"]
         python: ["3.13"]
 #        x86_64: [v1, v2, v3, v4]
         x86_64: [v3]
         plat: [ubuntu-22.04, macos-13]
+      exclude:
+        - plat: ubuntu-22.04
+          blas: accelerate
 
     steps:
       - name: Checkout numpy
@@ -49,7 +52,8 @@ jobs:
         if: matrix.x86_64 != ''
         env:
           PLAT: linux_x86_64
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Cvariant-label=x8664${{ matrix.x86_64 }} -Ccompile-args=-v
+          BLAS: ${{ matrix.blas }}
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Cvariant-label=x8664${{ matrix.x86_64 }}_${{ matrix.blas }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
         if: matrix.x86_64 == ''

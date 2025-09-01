@@ -97,7 +97,7 @@ foreach variant_meta : get_option('variant')
   if split_meta.length() != 3
     error('Invalid variant key: ' + variant_meta)
   endif
-  if split_meta[0].strip() == 'blas' and split_meta[1].strip() == 'variant'
+  if split_meta[0].strip() == 'blas_lapack' and split_meta[1].strip() == 'provider'
     blas_variant = split_meta[2].strip()
   elif split_meta[0].strip() == 'x86_64' and split_meta[1].strip() == 'level'
     if host_machine.cpu_family() != 'x86_64'

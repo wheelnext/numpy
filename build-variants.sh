@@ -2,7 +2,7 @@
 
 set -ex
 
-if ! grep -q Ubuntu /etc/os-release; then
+if [[ ${BLAS:-openblas} != openblas ]]; then
 	export INSTALL_OPENBLAS=false
 fi
 

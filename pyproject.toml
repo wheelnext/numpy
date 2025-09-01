@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "meson-python @ https://github.com/wheelnext/meson-python/archive/wheel-variants.tar.gz",
+    "meson-python @ https://github.com/wheelnext/meson-python/archive/plugin-use.tar.gz",
     "Cython >= 3.0.6"
 ]
 
@@ -60,12 +60,16 @@ tracker = "https://github.com/numpy/numpy/issues"
 "release notes" = "https://numpy.org/doc/stable/release"
 
 [variant.default-priorities]
-namespace = ["x86_64", "aarch64"]
+namespace = ["x86_64", "aarch64", "blas_lapack"]
 
 [variant.providers.aarch64]
 requires = ["provider-variant-aarch64 @ git+https://github.com/wheelnext/variant_aarch64@dev"]
 enable-if = "platform_machine == 'aarch64' or 'arm' in platform_machine"
 plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
+
+[variant.providers.blas_lapack]
+requires = ["blas-lapack-variant-provider @ git+https://github.com/wheelnext/blas-lapack-variant-provider"]
+plugin-use = "build"
 
 [variant.providers.x86_64]
 requires = ["provider-variant-x86-64 @ git+https://github.com/wheelnext/variant_x86_64@dev"]
