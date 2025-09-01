@@ -33,9 +33,9 @@ jobs:
 #        x86_64: [v1, v2, v3, v4]
         x86_64: [v3]
         plat: [ubuntu-22.04, macos-13]
-      exclude:
-        - plat: ubuntu-22.04
-          blas: accelerate
+        exclude:
+          - plat: ubuntu-22.04
+            blas: accelerate
 
     steps:
       - name: Checkout numpy
