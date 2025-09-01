@@ -74,7 +74,7 @@ jobs:
     runs-on: ${{ matrix.plat }}
     strategy:
       matrix:
-        blas: [""]
+        blas: [openblas, accelerate]
         #python: ["3.10", "3.11", "3.12", "3.13"]
         python: ["3.13"]
         #aarch64: ["8a", "8.1a", "8.2a", "8.3a", "8.4a", "8.5a"]
@@ -96,7 +96,9 @@ jobs:
         if: matrix.aarch64 != ''
         env:
           PLAT: linux_aarch64
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Cvariant-label=armv${{ matrix.aarch64 }} -Ccompile-args=-v
+          CPU: armv${{ matrix.aarch64 }}
+          BLAS: ${{ matrix.blas }}
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
         if: matrix.aarch64 == ''
