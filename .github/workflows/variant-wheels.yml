@@ -49,7 +49,7 @@ jobs:
         if: matrix.x86_64 != ''
         env:
           PLAT: linux_x86_64
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Cvariant-label=x8664${{ matrix.x86_64 }} -Ccompile-args=-v
 
       - name: Build non-variant wheel
         if: matrix.x86_64 == ''
