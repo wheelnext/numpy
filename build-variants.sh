@@ -15,17 +15,20 @@ fi
 
 . tools/wheels/cibw_before_build.sh "${PWD}"
 export PKG_CONFIG_PATH
-pip install build auditwheel
+pip install build auditwheel delocate
 python -m build -w "${@}"
+mkdir wheelhouse
+
+# tag updating needs to be updated for variants
+set -- dist/*.whl
+old_name=${1#*/}
+# strip variant label to avoid issues with auditwheel
+mv "${1}" "${1%-*}.whl"
+
 if grep -q Ubuntu /etc/os-release; then
-	# tag updating needs to be updated for variants
-	set -- dist/*.whl
-	old_name=${1#*/}
-	# strip variant label to avoid issues with auditwheel
-	mv "${1}" "${1%-*}.whl"
 	auditwheel repair dist/*.whl
 	mv wheelhouse/*.whl "wheelhouse/${old_name}"
 else
-	# quick hack to make workflows simpler
-	mv dist wheelhouse
+	delocate-wheel -w wheelhouse dist/*.whl
+	mv wheelhouse/*.whl "wheelhouse/${old_name}"
 fi
