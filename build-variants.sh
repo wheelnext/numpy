@@ -6,6 +6,13 @@ if [[ ${BLAS:-openblas} != openblas ]]; then
 	export INSTALL_OPENBLAS=false
 fi
 
+if [[ -n ${CPU} ]]; then
+	if [[ ${BLAS} == accelerate ]]; then
+		BLAS=accel  # to fit in label
+	fi
+	set -- "${@}" -Cvariant-label=${CPU}_${BLAS}
+fi
+
 . tools/wheels/cibw_before_build.sh "${PWD}"
 export PKG_CONFIG_PATH
 pip install build auditwheel
