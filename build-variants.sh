@@ -9,10 +9,6 @@ case ${BLAS:-openblas} in
 		;;
 	mkl)
 		pip install mkl-devel
-		pip show mkl-devel
-
-		site=$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')
-		echo "$site"/lib*/pkgconfig
 		;;
 esac
 
