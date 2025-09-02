@@ -27,7 +27,7 @@ jobs:
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
       matrix:
-        blas: [openblas, accelerate]
+        blas: [openblas, accelerate, mkl]
 #        python: ["3.11", "3.12", "3.13", "3.14-dev"]
         python: ["3.13"]
 #        x86_64: [v1, v2, v3, v4]
@@ -36,6 +36,8 @@ jobs:
         exclude:
           - plat: ubuntu-22.04
             blas: accelerate
+          - plat: macos-13
+            blas: mkl
 
     steps:
       - name: Checkout numpy

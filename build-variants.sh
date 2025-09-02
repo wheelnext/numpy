@@ -2,9 +2,16 @@
 
 set -ex
 
-if [[ ${BLAS:-openblas} != openblas ]]; then
-	export INSTALL_OPENBLAS=false
-fi
+export INSTALL_OPENBLAS=false
+case ${BLAS:-openblas} in
+	openblas)
+		export INSTALL_OPENBLAS=true
+		;;
+	mkl)
+		pip install mkl-devel
+		export PKG_CONFIG_PATH=${VIRTUAL_ENV}/lib/pkgconfig
+		;;
+esac
 
 if [[ -n ${CPU} ]]; then
 	if [[ ${BLAS} == accelerate ]]; then
