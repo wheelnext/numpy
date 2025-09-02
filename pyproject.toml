@@ -40,6 +40,9 @@ classifiers = [
     'Operating System :: Unix',
     'Operating System :: MacOS',
 ]
+dependencies = [
+    'mkl; "blas_lapack::provider::mkl" in variant_properties',
+]
 
 [project.scripts]
 f2py = 'numpy.f2py.f2py2e:main'

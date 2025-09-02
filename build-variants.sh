@@ -32,7 +32,7 @@ old_name=${1#*/}
 mv "${1}" "${1%-*}.whl"
 
 if grep -q Ubuntu /etc/os-release; then
-	auditwheel repair dist/*.whl
+	auditwheel repair --exclude 'libmkl*' dist/*.whl
 	mv wheelhouse/*.whl "wheelhouse/${old_name}"
 else
 	delocate-wheel -w wheelhouse dist/*.whl
