@@ -28,10 +28,8 @@ jobs:
       fail-fast: false
       matrix:
         blas: [openblas, accelerate, mkl]
-#        python: ["3.11", "3.12", "3.13", "3.14-dev"]
-        python: ["3.13"]
+        python: ["3.11", "3.12", "3.13", "3.14-dev"]
 #        x86_64: [v1, v2, v3, v4]
-        x86_64: [v3]
         plat: [ubuntu-22.04, macos-13]
         exclude:
           - plat: ubuntu-22.04
@@ -51,18 +49,10 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Build variant wheel
-        if: matrix.x86_64 != ''
         env:
           PLAT: linux_x86_64
-          CPU: x8664${{ matrix.x86_64 }}
           BLAS: ${{ matrix.blas }}
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=x86_64::level::${{ matrix.x86_64 }} -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
-
-      - name: Build non-variant wheel
-        if: matrix.x86_64 == ''
-        env:
-          PLAT: linux_x86_64
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
         with:
@@ -77,10 +67,8 @@ jobs:
     strategy:
       matrix:
         blas: [openblas, accelerate]
-        #python: ["3.10", "3.11", "3.12", "3.13"]
-        python: ["3.13"]
+        python: ["3.11", "3.12", "3.13"]
         #aarch64: ["8a", "8.1a", "8.2a", "8.3a", "8.4a", "8.5a"]
-        aarch64: ["8a"]
         plat: [ubuntu-22.04-arm, macos-14]
         exclude:
           - plat: ubuntu-22.04-arm
@@ -98,18 +86,10 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Build variant wheel
-        if: matrix.aarch64 != ''
         env:
           PLAT: linux_aarch64
-          CPU: armv${{ matrix.aarch64 }}
           BLAS: ${{ matrix.blas }}
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=aarch64::version::${{ matrix.aarch64 }} -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
-
-      - name: Build non-variant wheel
-        if: matrix.aarch64 == ''
-        env:
-          PLAT: linux_aarch64
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
         with:

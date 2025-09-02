@@ -13,12 +13,7 @@ case ${BLAS:-openblas} in
 		;;
 esac
 
-if [[ -n ${CPU} ]]; then
-	if [[ ${BLAS} == accelerate ]]; then
-		BLAS=accel  # to fit in label
-	fi
-	set -- "${@}" -Cvariant-label=${CPU}_${BLAS}
-fi
+set -- "${@}" -Cvariant-label=${BLAS}
 
 . tools/wheels/cibw_before_build.sh "${PWD}"
 export PKG_CONFIG_PATH
