@@ -9,6 +9,8 @@ case ${BLAS:-openblas} in
 		;;
 	mkl)
 		pip install mkl-devel
+		pip show mkl-devel
+
 		export PKG_CONFIG_PATH=$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')/lib/pkgconfig
 		ls "$PKG_CONFIG_PATH"
 		;;
