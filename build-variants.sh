@@ -11,8 +11,8 @@ case ${BLAS:-openblas} in
 		pip install mkl-devel
 		pip show mkl-devel
 
-		export PKG_CONFIG_PATH=$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')/lib/pkgconfig
-		ls "$PKG_CONFIG_PATH"
+		site=$(python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')
+		echo "$site"/lib*/pkgconfig
 		;;
 esac
 
