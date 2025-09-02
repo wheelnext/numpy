@@ -9,6 +9,7 @@ case ${BLAS:-openblas} in
 		;;
 	mkl)
 		pip install mkl-devel
+		export LDFLAGS="$LDFLAGS -Wl,-rpath,\$ORIGIN/../../../.."
 		;;
 esac
 
