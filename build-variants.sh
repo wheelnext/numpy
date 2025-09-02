@@ -9,7 +9,7 @@ case ${BLAS:-openblas} in
 		;;
 	mkl)
 		pip install mkl-devel
-		export PKG_CONFIG_PATH=${VIRTUAL_ENV}/lib/pkgconfig
+		export PKG_CONFIG_PATH=$(python -c 'import sysconfig; print(sysconfig.get_path("platlib"))')/lib/pkgconfig
 		;;
 esac
 
