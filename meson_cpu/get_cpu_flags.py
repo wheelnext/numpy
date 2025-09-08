@@ -2,22 +2,28 @@
 
 import argparse
 
-from provider_variant_x86_64.plugin import X8664Plugin
-
 
 def main() -> None:
     argp = argparse.ArgumentParser()
+    argp.add_argument("--arch", required=True, choices=["aarch64", "x86_64"])
     argp.add_argument("--language", required=True)
     argp.add_argument("--compiler-name", required=True)
     argp.add_argument("--compiler-version", required=True)
     argp.add_argument("--variant", required=True)
 
     args = argp.parse_args()
-    plugin = X8664Plugin()
+
+    if args.arch == "aarch64":
+        from provider_variant_aarch64.plugin import AArch64Plugin
+        plugin = AArch64Plugin()
+    elif args.arch == "x86_64":
+        from provider_variant_x86_64.plugin import X8664Plugin
+        plugin = X8664Plugin()
+
     vprops = [
         argparse.Namespace(
-            namespace="x86_64",
-            feature="level",
+            namespace=args.arch,
+            feature="level" if args.arch == "x86_64" else "version",
             value=args.variant,
         )
     ]

@@ -77,6 +77,34 @@ subdir('s390x')
 subdir('arm')
 subdir('riscv64')
 
+if x86_64_variant != '' or aarch64_variant != ''
+  if x86_64_variant != ''
+    variant_arch = 'x86_64'
+    variant_value = x86_64_variant
+  else
+    variant_arch = 'aarch64'
+    variant_value = aarch64_variant
+  endif
+
+  lang_mapping = {
+    'c': 'c',
+    'cpp': 'c++',
+  }
+  foreach meson_lang, plugin_lang : lang_mapping
+    cpu_flags = run_command(
+      py, 'get_cpu_flags.py',
+      '--arch', variant_arch,
+      '--language', plugin_lang,
+      '--compiler-name', cc.get_id(),
+      '--compiler-version', cc.version(),
+      '--variant', variant_value,
+      capture: true,
+      check: true,
+    ).stdout().split()
+    add_project_arguments(cpu_flags, language: [meson_lang])
+  endforeach
+endif
+
 CPU_FEATURES = {}
 CPU_FEATURES += ARM_FEATURES
 CPU_FEATURES += X86_FEATURES

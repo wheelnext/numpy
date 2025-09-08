@@ -12,19 +12,6 @@ if aarch64_variant != ''
   else
     error('Unknown aarch64 variant: ' + aarch64_variant)
   endif
-
-  py = import('python').find_installation(pure: false)
-  cc = meson.get_compiler('c')
-  cpu_flags = run_command(
-    py, 'get_cpu_flags.py',
-    '--language', 'c',
-    '--compiler-name', cc.get_id(),
-    '--compiler-version', cc.version(),
-    '--variant', aarch64_variant,
-    capture: true,
-    check: true,
-  ).stdout().split()
-  add_project_arguments(cpu_flags, language: ['c', 'cpp'])
 endif
 
 NEON = mod_features.new(
