@@ -52,7 +52,7 @@ jobs:
         env:
           PLAT: linux_x86_64
           BLAS: ${{ matrix.blas }}
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dmkl-threading=iomp -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
         with:
@@ -89,7 +89,7 @@ jobs:
         env:
           PLAT: linux_aarch64
           BLAS: ${{ matrix.blas }}
-        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
+        run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dmkl-threading=iomp -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4
         with:
