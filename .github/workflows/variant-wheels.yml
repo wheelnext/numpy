@@ -31,6 +31,10 @@ jobs:
         python: ["3.11", "3.12", "3.13", "3.14-dev"]
 #        x86_64: [v1, v2, v3, v4]
         plat: [ubuntu-22.04, macos-13]
+        include:
+          - plat: ubuntu-22.04
+            blas: mkl
+            x86_64: v4
         exclude:
           - plat: ubuntu-22.04
             blas: accelerate
@@ -52,6 +56,7 @@ jobs:
         env:
           PLAT: linux_x86_64
           BLAS: ${{ matrix.blas }}
+          X8664: ${{ matrix.x86_64 }}
         run: bash build-variants.sh -Csetup-args=-Duse-ilp64=true -Csetup-args=-Dmkl-threading=iomp -Cvariant=blas_lapack::provider::${{ matrix.blas }} -Ccompile-args=-v
 
       - uses: actions/upload-artifact@v4

@@ -3,6 +3,7 @@
 set -ex
 
 export INSTALL_OPENBLAS=false
+LABEL=${BLAS:-openblas}
 case ${BLAS:-openblas} in
 	openblas)
 		export INSTALL_OPENBLAS=true
@@ -13,7 +14,12 @@ case ${BLAS:-openblas} in
 		;;
 esac
 
-set -- "${@}" -Cvariant-label=${BLAS}
+if [ -n "${X8664}" ]; then
+	LABEL=x8664v4_${LABEL}
+	set -- "${@}" "-Cvariant=x86_64::level::${X8664}"
+fi
+
+set -- "${@}" -Cvariant-label=${LABEL}
 
 . tools/wheels/cibw_before_build.sh "${PWD}"
 export PKG_CONFIG_PATH
