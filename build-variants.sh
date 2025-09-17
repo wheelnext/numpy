@@ -2,6 +2,8 @@
 
 set -ex
 
+pip config set global.extra-index-url https://pypi.anaconda.org/mgorny/simple
+
 export INSTALL_OPENBLAS=false
 LABEL=${BLAS:-openblas}
 case ${BLAS:-openblas} in
