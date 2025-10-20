@@ -34,7 +34,7 @@ jobs:
         include:
           - plat: ubuntu-22.04
             blas: mkl
-            x86_64: v4
+            x86_64: v3
         exclude:
           - plat: ubuntu-22.04
             blas: accelerate
