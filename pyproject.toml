@@ -112,16 +112,13 @@ namespace = ["x86_64", "aarch64", "blas_lapack"]
 
 [variant.providers.aarch64]
 requires = ["provider-variant-aarch64"]
-enable-if = "platform_machine == 'aarch64' or 'arm' in platform_machine"
 plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
 
 [variant.providers.blas_lapack]
-requires = ["blas-lapack-variant-provider"]
-install-time = false
+build-requires = ["blas-lapack-variant-provider"]
 
 [variant.providers.x86_64]
 requires = ["provider-variant-x86-64"]
-enable-if = "platform_machine == 'x86_64' or platform_machine == 'AMD64'"
 plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
 [tool.towncrier]
