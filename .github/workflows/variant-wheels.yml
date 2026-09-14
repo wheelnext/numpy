@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         blas: [openblas, accelerate, mkl]
-        python: ["3.11", "3.12", "3.13", "3.14-dev"]
+        python: ["3.12", "3.13", "3.14", "3.15-dev"]
 #        x86_64: [v1, v2, v3, v4]
         plat: [ubuntu-22.04, macos-13]
         include:
@@ -72,7 +72,7 @@ jobs:
     strategy:
       matrix:
         blas: [openblas, accelerate]
-        python: ["3.11", "3.12", "3.13"]
+        python: ["3.12", "3.13", "3.14", "3.15-dev"]
         #aarch64: ["8a", "8.1a", "8.2a", "8.3a", "8.4a", "8.5a"]
         plat: [ubuntu-22.04-arm, macos-14]
         exclude:
