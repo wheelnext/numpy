@@ -25,7 +25,7 @@ set -- "${@}" -Cvariant-label=${LABEL}
 
 . tools/wheels/cibw_before_build.sh "${PWD}"
 export PKG_CONFIG_PATH=${pkgconf_path}
-pip install build auditwheel delocate
+pip install build auditwheel delocate patchelf
 python -m build -w "${@}"
 mkdir wheelhouse
 
