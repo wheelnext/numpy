@@ -24,8 +24,7 @@ fi
 set -- "${@}" -Cvariant-label=${LABEL}
 
 . tools/wheels/cibw_before_build.sh "${PWD}"
-python -c "import sys; print(sys.prefix)"
-export PKG_CONFIG_PATH=${pkgconf_path}:${HOME}/.local/lib/pkgconfig
+export PKG_CONFIG_PATH=${pkgconf_path}:$(python -c "import sys; print(sys.prefix)")/lib/pkgconfig
 pip install build auditwheel delocate patchelf
 python -m build -w "${@}"
 mkdir wheelhouse
