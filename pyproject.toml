@@ -121,6 +121,16 @@ build-requires = ["blas-lapack-variant-provider"]
 requires = ["provider-variant-x86-64"]
 plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
+[variant.variants.openblas]
+blas_lapack = {provider = ["openblas"]}
+
+[variant.variants.mkl]
+blas_lapack = {provider = ["mkl"]}
+
+[variant.variants.x8664v4_mkl]
+blas_lapack = {provider = ["mkl"]}
+x86_64 = {level = ["v4"]}
+
 [tool.towncrier]
     single_file = false
     filename = "doc/source/release/notes-towncrier.rst"
