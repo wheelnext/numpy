@@ -17,8 +17,11 @@ case ${BLAS:-openblas} in
 esac
 
 if [ -n "${X8664}" ]; then
+	if [ "${X8664}" != "v4" -o "${BLAS}" != "mkl" ]; then
+		echo "Unsupported variant"
+		exit 1
+	fi
 	LABEL=x8664v4_${LABEL}
-	set -- "${@}" "-Cvariant=x86_64::level::${X8664}"
 fi
 
 set -- "${@}" -Cvariant-label=${LABEL}
