@@ -121,6 +121,9 @@ build-requires = ["blas-lapack-variant-provider"]
 requires = ["provider-variant-x86-64"]
 plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
 
+[variant.variants.accelerate]
+blas_lapack = {provider = ["accelerate"]}
+
 [variant.variants.openblas]
 blas_lapack = {provider = ["openblas"]}
 
