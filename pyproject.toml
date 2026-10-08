@@ -111,15 +111,15 @@ tracker = "https://github.com/numpy/numpy/issues"
 namespace = ["x86_64", "aarch64", "blas_lapack"]
 
 [variant.providers.aarch64]
-requires = ["provider-variant-aarch64"]
-plugin-api = "provider_variant_aarch64.plugin:AArch64Plugin"
+requires = ["aarch64-variant-provider"]
+plugin-api = "aarch64_variant_provider.plugin:AArch64Plugin"
 
 [variant.providers.blas_lapack]
 build-requires = ["blas-lapack-variant-provider"]
 
 [variant.providers.x86_64]
-requires = ["provider-variant-x86-64"]
-plugin-api = "provider_variant_x86_64.plugin:X8664Plugin"
+requires = ["x86_64-variant-provider"]
+plugin-api = "x86_64_variant_provider.plugin:X8664Plugin"
 
 [variant.variants.accelerate]
 blas_lapack = {provider = ["accelerate"]}
